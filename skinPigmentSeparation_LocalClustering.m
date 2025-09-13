@@ -1,12 +1,14 @@
+% skin pigment separation:
+%  Feature point selection method based on local clustering
+
 tic    %运行开始时间
 clc;
 clear;
 [mpath,mname]=fileparts(mfilename('fullpath'));
 % 1 读入图像数据
-path='Data\1.jpg';
+path='Data\2.jpg';
 Cbase=imread(path);
 Cpatent=Cbase(600:2900,100:1600,:);
-
 
 iminfo=[800 2600 400 1400];
 Cbase=Cbase(iminfo(1):iminfo(2),iminfo(3):iminfo(4),:);
@@ -22,7 +24,7 @@ Cbase=Cbase(iminfo(1):iminfo(2),iminfo(3):iminfo(4),:);
         
         %为了接下色素值可以进行计算和表达
         %对数据做适当放缩
-        Cbr0_1=(Cbr(:)+1)/256;              %将矩阵展开成一维列向量reshape（Cr,row*col,1)
+        Cbr0_1=(Cbr(:)+1)/256;              
         Cbg0_1=(Cbg(:)+1)/256;
         Cbb0_1=(Cbb(:)+1)/256;
         
@@ -47,9 +49,7 @@ end
        
 Distance=[];
 % r4=randperm(num,4)
-% r4=[5651 5869 1379 3614]
 r4=[1379]
-% rnum=0;
 for i=1:num
     n=position(i,1);
     m=position(i,2);
@@ -71,11 +71,11 @@ for i=1:num
         Distance(i,:)=dBG_R;
 end
         [D index]=sort(Distance,'descend');
-%         [D index]=sort(Distance);
+
         maxd=index(1:7200);
         maxp=position(maxd,:);
         p1=[];
-        for i=1:1000     
+        for i=1:2000     
             n=maxp(i,1);
             m=maxp(i,2);
             p1=[p1 Cbase(n:n+4,m:m+4,:)];
@@ -83,7 +83,6 @@ end
                   
         
         [V1 f1]=ICD_FastICA(p1);
-
 
 toc    %运行结束时间
 disp(['运行时间:',num2str(toc)]);
@@ -135,7 +134,6 @@ end
 
 %##################封装函数####################
 function [V flag]=ICD_FastICA(C)
-% disp('分离算法：SFastICA');
  %可手动设置区域大小
         Cr=double(C(:,:,1));   %将数据转成double类型
         Cg=double(C(:,:,2));
@@ -143,7 +141,7 @@ function [V flag]=ICD_FastICA(C)
         
         %为了接下色素值可以进行计算和表达
         %对数据做适当放缩
-        Cr0_1=(Cr(:)+1)/256;              %将矩阵展开成一维列向量reshape（Cr,row*col,1)
+        Cr0_1=(Cr(:)+1)/256;              
         Cg0_1=(Cg(:)+1)/256;
         Cb0_1=(Cb(:)+1)/256;        
         
@@ -157,7 +155,7 @@ function [V flag]=ICD_FastICA(C)
         
         %2 数据预处理：去均值，PCA降维，白化
         
-        X=C2d;        %由论文中公式得出，需要进一步推导验证
+        X=C2d;        
         
         %-----------去均值---------
         
@@ -165,7 +163,7 @@ function [V flag]=ICD_FastICA(C)
         
         average=mean(X')';%均值
         
-        for i=1:M                                %可拿矩阵直接减去对应的行列均值向量，结果相同
+        for i=1:M                               
             
             X(i,:)=X(i,:)-average(i)*ones(1,T);
             
@@ -209,13 +207,7 @@ function [V flag]=ICD_FastICA(C)
             if flag==1
                 
                 WP=W(:,n);%初始权矢量（任意）
-                
-                %Y=WP'*Z;
-                
-                %G=Y.^3;%G为非线性函数，可取y^3等
-                
-                %GG=3*Y.^2;?%G的导数
-                
+                           
                 count=0;
                 
                 LastWP=zeros(m,1);
@@ -228,7 +220,6 @@ function [V flag]=ICD_FastICA(C)
                     
                     LastWP=WP;%上次迭代的值
                     
-                    % WP=1/T*Z*((LastWP'*Z).^3)'-3*LastWP;
                     
                     for i=1:m
                         
