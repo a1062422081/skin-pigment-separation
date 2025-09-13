@@ -112,21 +112,9 @@ if f1==1
     C11=reshape(C1(1,:),row,col);
     C12=reshape(C1(2,:),row,col);
     
-%     subplot(1,3,2);
     figure;
-    %修正后的显示方法
-%      imshow(cat(3,1.1*(Cbr+1)/256,0.85*C11,0.85*C12));
-     imshow(cat(3,1*(Cbr+1)/256,1*C11,1*C12));
-%论文2.1中的显示方法
-%         imshow(cat(3,1.1*(Cbr+1)/256,0.85*C11,0.85*C12));
-        %使用E值时图像显示方式
-%         imshow(cat(3,0.7*(Cbr+1)/256,0.3*C11,0.5*C12));
-%     imshow(cat(3,1.05*(Cbr+1)/256,0.8*C11,0.8*C12));
-    % imshow(cat(3,0.6*(Cbr+1)/256,C11,C12));
-%     imwrite(cat(3,1.1*(Cbr+1)/256,0.85*C11,0.85*C12),'C:\Users\gw\Desktop\论文003本方法血色素.jpg')
-%     imwrite(cat(3,1.05*(Cbr+1)/256,0.8*C11,0.8*C12),'C:\Users\gw\Desktop\论文003本方法2400血色素.jpg')
-%  imwrite(cat(3,0.9*(Cbr+1)/256,0.65*C11,0.65*C12),'C:\Users\gw\Desktop\实验二001本方法1500血色素.jpg')
-% imwrite(cat(3,1.1*(Cbr+1)/256,0.85*C11,0.85*C12),'C:\Users\gw\Desktop\实验二002本方法1500血色素.jpg')
+    imshow(cat(3,1*(Cbr+1)/256,1*C11,1*C12));
+
 
     title('血色素');
     text(-500,500,{mname;num2str(iminfo);num2str(seinfo)},'Interpreter','none');
@@ -138,23 +126,12 @@ if f1==1
     C21=reshape(C2(1,:),row,col);
     C22=reshape(C2(2,:),row,col);
     
-    
-%     subplot(1,3,3);
     figure;
         imshow(cat(3,0.85*(Cbr+1)/256,C21,C22));
 
-%     imshow(cat(3,0.85*(Cbr+1)/256,C21,C22));
-%     imwrite(rgb2gray(cat(3,(Cbr+1)/256,C21,C22)),'C:\Users\gw\Desktop\专利006.jpg')
-%     imwrite(cat(3,0.9*(Cbr+1)/256,C21,C22),'C:\Users\gw\Desktop\论文004本方法黑色素.jpg')
-%     imwrite(cat(3,0.85*(Cbr+1)/256,C21,C22),'C:\Users\gw\Desktop\论文004本方法2400黑色素.jpg')
-%  imwrite(cat(3,0.85*(Cbr+1)/256,C21,C22),'C:\Users\gw\Desktop\实验二003本方法1500黑色素.jpg')
     title('黑色素');
     text(-500,500,{mname;num2str(iminfo);num2str(seinfo)},'Interpreter','none');
 end
-
-%     end
-
-% end
 
 %##################封装函数####################
 function [V flag]=ICD_FastICA(C)
